@@ -22,9 +22,8 @@ async function recupCategorie (){
 
 //Fonction qui affiche les works dans la gallery
 
-async function afficherWorks (){
+async function afficherWorks (works){
 
-    let works = await recupWorks ()
     let gallery = document.querySelector(".gallery");
 
     for ( let i=0 ; i < works.length ; i++) {
@@ -60,6 +59,8 @@ async function creationMenuFiltre () {
     input.type= "radio"
     input.name= "categorie"
     input.value = "Tous"
+    input.id = "0"
+    input.checked = true
     label.appendChild(input)
 
     let div = document.createElement("div")
@@ -77,6 +78,7 @@ async function creationMenuFiltre () {
         input.type= "radio"
         input.name= "categorie"
         input.value = `${categorie[i].name}`
+        input.id = categorie[i].id
         label.appendChild(input)
 
         let div = document.createElement("div")
@@ -88,10 +90,41 @@ async function creationMenuFiltre () {
     }
 }
 
+//Fonction qui permet d'appliquer le filtre sélectionné
+
+async function filtreWorks() {
+
+    let works = await recupWorks ()
+
+    let filtreInput = document.querySelectorAll('[name="categorie"]')
+
+    for( let i=0 ; i<filtreInput.length ; i++){
+
+        filtreInput[i].addEventListener("change", function (event) {
+
+
+            let worksFiltree = works.filter(function(work){
+
+                if (event.target.id == 0) {
+                    return work.categoryId != event.target.id
+                } else {
+                    return work.categoryId == event.target.id
+                }     
+            })
+
+            let gallery = document.querySelector(".gallery")
+            gallery.innerHTML = ""
+            afficherWorks(worksFiltree)
+        })
+    }
+
+}
+
 creationMenuFiltre ()
 
-afficherWorks()
+let works = await recupWorks ()
+afficherWorks(works)
 
-
+filtreWorks()
 
 
