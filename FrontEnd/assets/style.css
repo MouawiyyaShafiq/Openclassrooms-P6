@@ -125,6 +125,50 @@ li:hover {
 	text-align: center;
 	margin-bottom: 1em;
 }
+
+/* Modif : Ajout des sélecteurs pour les boutons du menu filtre */
+
+.filtres {
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	gap : 10px;
+	height: 38px;
+	margin-bottom: 51px;
+}
+
+.filtres input{
+	opacity: 0;
+	position: absolute;
+}
+
+.filtres input:checked + div{
+	color: white ;
+	background-color: #1D6154;
+}
+
+
+.filtres div{
+	min-width: 98px;
+	padding: 13px 14px ;
+	border-radius: 60px;
+	border: solid 1px #1D6154;
+	color: #1D6154;
+	font-family: syne;
+	font-size: 16px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	transition: color 200ms, background-color 200ms;
+}
+
+.filtres div:hover{
+	color: white ;
+	background-color: #1D6154;
+}
+
+/*-----------------------------------------------------*/
+
 .gallery {
 	width: 100%;
 	display: grid;
