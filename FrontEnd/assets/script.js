@@ -24,18 +24,18 @@ async function recupCategorie (){
 
 async function afficherWorks (works){
 
-    let gallery = document.querySelector(".gallery");
+    const gallery = document.querySelector(".gallery");
 
     for ( let i=0 ; i < works.length ; i++) {
         
-        let figure = document.createElement("figure")
+        const figure = document.createElement("figure")
         
-        let img = document.createElement("img")
+        const img = document.createElement("img")
         img.src = works[i].imageUrl
         img.alt = works[i].title
         figure.appendChild(img)
 
-        let figcaption = document.createElement("figcaption")
+        const figcaption = document.createElement("figcaption")
         figcaption.innerText =works[i].title
         figure.appendChild(figcaption)
 
@@ -49,13 +49,13 @@ async function afficherWorks (works){
 //Fonction qui affiche les boutons dans le menu filtre
 
 async function creationMenuFiltre () {
-    let categorie = await recupCategorie ()
-    let filtres = document.querySelector(".filtres");
+    const categorie = await recupCategorie ()
+    const filtres = document.querySelector(".filtres");
 
-    let label = document.createElement("label")
+    const label = document.createElement("label")
     label.classList.add("button")
         
-    let input = document.createElement("input")
+    const input = document.createElement("input")
     input.type= "radio"
     input.name= "categorie"
     input.value = "Tous"
@@ -63,7 +63,7 @@ async function creationMenuFiltre () {
     input.checked = true
     label.appendChild(input)
 
-    let div = document.createElement("div")
+    const div = document.createElement("div")
     div.innerHTML="Tous"
     label.appendChild(div)
 
@@ -71,17 +71,17 @@ async function creationMenuFiltre () {
 
     for ( let i=0 ; i < categorie.length ; i++) {
         
-        let label = document.createElement("label")
+        const label = document.createElement("label")
         label.classList.add("button")
         
-        let input = document.createElement("input")
+        const input = document.createElement("input")
         input.type= "radio"
         input.name= "categorie"
         input.value = `${categorie[i].name}`
         input.id = categorie[i].id
         label.appendChild(input)
 
-        let div = document.createElement("div")
+        const div = document.createElement("div")
         div.innerHTML=categorie[i].name
         label.appendChild(div)
 
@@ -94,16 +94,16 @@ async function creationMenuFiltre () {
 
 async function filtreWorks() {
 
-    let works = await recupWorks ()
+    const works = await recupWorks ()
 
-    let filtreInput = document.querySelectorAll('[name="categorie"]')
+    const filtreInput = document.querySelectorAll('[name="categorie"]')
 
     for( let i=0 ; i<filtreInput.length ; i++){
 
         filtreInput[i].addEventListener("change", function (event) {
 
 
-            let worksFiltree = works.filter(function(work){
+            const worksFiltree = works.filter(function(work){
 
                 if (event.target.id == 0) {
                     return work.categoryId != event.target.id
@@ -112,7 +112,7 @@ async function filtreWorks() {
                 }     
             })
 
-            let gallery = document.querySelector(".gallery")
+            const gallery = document.querySelector(".gallery")
             gallery.innerHTML = ""
             afficherWorks(worksFiltree)
         })
@@ -122,7 +122,7 @@ async function filtreWorks() {
 
 creationMenuFiltre ()
 
-let works = await recupWorks ()
+const works = await recupWorks ()
 afficherWorks(works)
 
 filtreWorks()
