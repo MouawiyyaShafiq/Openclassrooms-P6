@@ -1,3 +1,5 @@
+//Fonction qui permet de générer l'errorBox
+
 function genererErrorBox () {
     let errorbox = document.getElementById("errorBox")
 
@@ -9,6 +11,7 @@ function genererErrorBox () {
             }
 }
 
+//Fonction qui traite le formulaire de login utilisateur
 
 async function loginUser () {
 
@@ -16,7 +19,7 @@ async function loginUser () {
     
     form.addEventListener("submit", async function(event) {
         event.preventDefault()
-        
+
         let username = document.getElementById("email");
         let password = document.getElementById("motdepasse");
 
@@ -48,6 +51,9 @@ async function loginUser () {
                 const token = user.token
 
                 sessionStorage.setItem("authToken", token)
+
+                window.location.href = "./index.html";
+
             }
 
         } catch {

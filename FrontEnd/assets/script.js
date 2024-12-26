@@ -120,11 +120,35 @@ async function filtreWorks() {
 
 }
 
-creationMenuFiltre ()
+async function genererPage() {
+    
+    const token = sessionStorage.getItem("authToken")
+    const works = await recupWorks ()
+    afficherWorks(works)
 
-const works = await recupWorks ()
-afficherWorks(works)
+    if(!token) { 
+        
+        creationMenuFiltre ()
+        filtreWorks()
+        
+    }else{
 
-filtreWorks()
+        const divModif = document.createElement("div")
+        divModif.classList.add("headerModif")
+        divModif.innerHTML = "<p><i class=\"fa-regular fa-pen-to-square\"></i> Mode édition</p>"
+
+        document.body.prepend(divModif)
+
+        const portfolioHeader = document.querySelector("#portfolio h2")
+        portfolioHeader.innerHTML = "Mes Projets<button class=\"modifier\"><i class=\"fa-regular fa-pen-to-square\"></i><span> modifier</span></button>"
+
+    }
+}
+
+genererPage()
+
+
+
+
 
 

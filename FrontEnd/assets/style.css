@@ -54,6 +54,17 @@ body {
 	font-size: 14px;
 	background-color: #FFFEF8;
 }
+
+.headerModif{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 59px;
+	max-width: 1440px;
+	background-color: black;
+	color: white;
+}
+
 header {
 	margin: 50px 150px;
 	max-width: 1140px;
@@ -139,18 +150,33 @@ nav a:hover {
 	margin-bottom: 0.5em;
 }
 #portfolio h2 {
+	position: relative;
 	text-align: center;
-	margin-bottom: 1em;
+	width: 194px;
+	margin: auto;
+	margin-top: 100px;
+	margin-bottom: 30px;
+}
+
+.modifier{
+	right: -100px;
+	top : 7px;
+	position: absolute;
+	display: inline-flex;
+	background-color: white;
+	border: none;
+	gap: 10px;
+	cursor: pointer;	
 }
 
 /* Modif : Ajout des sélecteurs pour les boutons du menu filtre */
+
 
 .filtres {
 	width: 100%;
 	display: flex;
 	justify-content: center;
 	gap : 10px;
-	height: 38px;
 	margin-bottom: 51px;
 }
 
@@ -200,7 +226,7 @@ nav a:hover {
 }
 #contact {
 	width: 50%;
-margin: auto;
+	margin: auto;
 }
 #contact > * {
 	text-align: center;
