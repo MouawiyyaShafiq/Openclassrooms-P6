@@ -55,7 +55,7 @@ body {
 	background-color: #FFFEF8;
 }
 
-.headerModif{
+.headerModified{
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -158,7 +158,7 @@ nav a:hover {
 	margin-bottom: 30px;
 }
 
-.modifier{
+.modified{
 	right: -100px;
 	top : 7px;
 	position: absolute;
@@ -172,7 +172,7 @@ nav a:hover {
 /* Modif : Ajout des sélecteurs pour les boutons du menu filtre */
 
 
-.filtres {
+.filters {
 	width: 100%;
 	display: flex;
 	justify-content: center;
@@ -180,18 +180,18 @@ nav a:hover {
 	margin-bottom: 51px;
 }
 
-.filtres input{
+.filters input{
 	opacity: 0;
 	position: absolute;
 }
 
-.filtres input:checked + div{
+.filters input:checked + div{
 	color: white ;
 	background-color: #1D6154;
 }
 
 
-.filtres div{
+.filters div{
 	min-width: 98px;
 	padding: 13px 14px ;
 	border-radius: 60px;
@@ -205,7 +205,7 @@ nav a:hover {
 	transition: color 200ms, background-color 200ms;
 }
 
-.filtres div:hover{
+.filters div:hover{
 	color: white ;
 	background-color: #1D6154;
 }

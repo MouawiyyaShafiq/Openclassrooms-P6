@@ -1,20 +1,20 @@
 
 //Fonction qui récupère les works depuis l'API
 
-async function recupWorks (){
+async function recoverWorks (){
 
-    const reponse = await fetch ("http://localhost:5678/api/works");
-    const works = await reponse.json();
+    const response = await fetch ("http://localhost:5678/api/works");
+    const works = await response.json();
     return works
     
 }
 
 //Fonction qui récupère les categories depuis l'API
 
-async function recupCategorie (){
+async function recoverCategorie (){
 
-    const reponse = await fetch ("http://localhost:5678/api/categories");
-    const categorie = await reponse.json();
+    const response = await fetch ("http://localhost:5678/api/categories");
+    const categorie = await response.json();
     return categorie
     
 }
@@ -22,7 +22,7 @@ async function recupCategorie (){
 
 //Fonction qui affiche les works dans la gallery
 
-async function afficherWorks (works){
+async function displayWorks (works){
 
     const gallery = document.querySelector(".gallery");
 
@@ -48,9 +48,9 @@ async function afficherWorks (works){
 
 //Fonction qui affiche les boutons dans le menu filtre
 
-async function creationMenuFiltre () {
-    const categorie = await recupCategorie ()
-    const filtres = document.querySelector(".filtres");
+async function creatFilterMenu () {
+    const categorie = await recoverCategorie ()
+    const filters = document.querySelector(".filters");
 
     const label = document.createElement("label")
     label.classList.add("button")
@@ -67,7 +67,7 @@ async function creationMenuFiltre () {
     div.innerHTML="Tous"
     label.appendChild(div)
 
-    filtres.appendChild(label)
+    filters.appendChild(label)
 
     for ( let i=0 ; i < categorie.length ; i++) {
         
@@ -85,7 +85,7 @@ async function creationMenuFiltre () {
         div.innerHTML=categorie[i].name
         label.appendChild(div)
 
-        filtres.appendChild(label)
+        filters.appendChild(label)
 
     }
 }
@@ -94,16 +94,16 @@ async function creationMenuFiltre () {
 
 async function filtreWorks() {
 
-    const works = await recupWorks ()
+    const works = await recoverWorks ()
 
-    const filtreInput = document.querySelectorAll('[name="categorie"]')
+    const filterInput = document.querySelectorAll('[name="categorie"]')
 
-    for( let i=0 ; i<filtreInput.length ; i++){
+    for( let i=0 ; i<filterInput.length ; i++){
 
-        filtreInput[i].addEventListener("change", function (event) {
+        filterInput[i].addEventListener("change", function (event) {
 
 
-            const worksFiltree = works.filter(function(work){
+            const worksFiltered = works.filter(function(work){
 
                 if (event.target.id == 0) {
                     return work.categoryId != event.target.id
@@ -114,38 +114,38 @@ async function filtreWorks() {
 
             const gallery = document.querySelector(".gallery")
             gallery.innerHTML = ""
-            afficherWorks(worksFiltree)
+            displayWorks(worksFiltered)
         })
     }
 
 }
 
-async function genererPage() {
+async function loadPage() {
     
     const token = sessionStorage.getItem("authToken")
-    const works = await recupWorks ()
-    afficherWorks(works)
+    const works = await recoverWorks ()
+    displayWorks(works)
 
     if(!token) { 
         
-        creationMenuFiltre ()
+        creatFilterMenu ()
         filtreWorks()
         
     }else{
 
-        const divModif = document.createElement("div")
-        divModif.classList.add("headerModif")
-        divModif.innerHTML = "<p><i class=\"fa-regular fa-pen-to-square\"></i> Mode édition</p>"
+        const divModified = document.createElement("div")
+        divModified.classList.add("headerModified")
+        divModified.innerHTML = "<p><i class=\"fa-regular fa-pen-to-square\"></i> Mode édition</p>"
 
-        document.body.prepend(divModif)
+        document.body.prepend(divModified)
 
         const portfolioHeader = document.querySelector("#portfolio h2")
-        portfolioHeader.innerHTML = "Mes Projets<button class=\"modifier\"><i class=\"fa-regular fa-pen-to-square\"></i><span> modifier</span></button>"
+        portfolioHeader.innerHTML = "Mes Projets<button class=\"modified\"><i class=\"fa-regular fa-pen-to-square\"></i><span> modifier</span></button>"
 
     }
 }
 
-genererPage()
+loadPage()
 
 
 

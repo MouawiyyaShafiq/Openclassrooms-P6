@@ -1,6 +1,6 @@
 //Fonction qui permet de générer l'errorBox
 
-function genererErrorBox () {
+function loadErrorBox () {
     let errorbox = document.getElementById("errorBox")
 
             if (!errorbox) {
@@ -21,33 +21,33 @@ async function loginUser () {
         event.preventDefault()
 
         let username = document.getElementById("email");
-        let password = document.getElementById("motdepasse");
+        let password = document.getElementById("password");
 
-        const donneelogin = {
+        let loginData = {
             "email": `${username.value}`,
             "password": `${password.value}`
         }
 
-        const chargeUtile = JSON.stringify(donneelogin)
+        loginData = JSON.stringify(loginData)
 
         username.value = ""
         password.value = ""
 
         try {
             
-            const reponse = await fetch ("http://localhost:5678/api/users/login",{
+            const response = await fetch ("http://localhost:5678/api/users/login",{
                 method : "POST",
                 headers : {"Content-Type": "application/json"},
-                body : chargeUtile
+                body : loginData
             })
 
-            if (reponse.status != 200){
+            if (response.status != 200){
 
                 throw new Error()
 
             } else {
 
-                const user = await reponse.json()
+                const user = await response.json()
                 const token = user.token
 
                 sessionStorage.setItem("authToken", token)
@@ -58,13 +58,15 @@ async function loginUser () {
 
         } catch {
             
-            genererErrorBox ()
+            loadErrorBox ()
             
         }
 
     })
    
 }
+
+sessionStorage.removeItem("authToken")
 
 loginUser ()
 
