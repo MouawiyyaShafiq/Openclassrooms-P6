@@ -140,7 +140,7 @@ async function loadPage() {
         document.body.prepend(divModified)
 
         const portfolioHeader = document.querySelector("#portfolio h2")
-        portfolioHeader.innerHTML = "Mes Projets<button class=\"modified\"><i class=\"fa-regular fa-pen-to-square\"></i><span> modifier</span></button>"
+        portfolioHeader.innerHTML = "Mes Projets<button href=\"#modal_1\" class=\"modified\"><i class=\"fa-regular fa-pen-to-square\"></i><span> modifier</span></button>"
 
     }
 }
