@@ -76,12 +76,15 @@
 				<button class="closeModal2"><i class="fa-solid fa-arrow-left"></i></i></button>
 				<button class="closeModal"><i class="fa-solid fa-xmark"></i></button>
 				<p class="modalTitle">Ajout photo</p>
-				<form>
+				<form id="addWorkForm">
 					<div>
-						<label class="file-input" for="file-input">
-							<i class="fa-regular fa-image"></i>
-							<div class="buttonVisual">+ Ajouter photo</div>
-							<p>jpg, png : 4mo max</p>
+						<label class="file-label" for="file-input">
+							<div class="defaultDisplay" >
+								<i class="fa-regular fa-image"></i>
+								<div class="buttonVisual">+ Ajouter photo</div>
+								<p>jpg, png : 4mo max</p>
+							</div>
+							<img class="previewImg" style="display: none;">
 						</label>
 						<input id="file-input" type="file" accept="image/*" hidden>
 						<label for="titre">Titre</label>

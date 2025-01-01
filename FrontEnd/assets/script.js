@@ -25,6 +25,7 @@ async function recoverCategorie (){
 async function displayWorks (works){
 
     const gallery = document.querySelector(".gallery");
+    gallery.innerHTML = ""
 
     for ( let i=0 ; i < works.length ; i++) {
         
@@ -112,8 +113,6 @@ async function filtreWorks() {
                 }     
             })
 
-            const gallery = document.querySelector(".gallery")
-            gallery.innerHTML = ""
             displayWorks(worksFiltered)
         })
     }
@@ -202,6 +201,7 @@ async function loadWorksAndCatgoriesInModal() {
     const categorie = await recoverCategorie ()
 
     const divImages = document.querySelector(".images")
+    divImages.innerHTML = ""
 
     for (let i=0 ; i < works.length ; i++) {
 
@@ -210,6 +210,7 @@ async function loadWorksAndCatgoriesInModal() {
     }
 
     const selectCategorie = document.getElementById("categorie")
+    selectCategorie.innerHTML = '<option value="" selected></option>'
     
     for (let i=0 ; i < categorie.length ; i++) {
 
@@ -219,12 +220,81 @@ async function loadWorksAndCatgoriesInModal() {
     
 }
 
+// Fonction permettant l'envoi d’un nouveau projet au back-end via le formulaire de la modale
+
+async function addWork () {
+
+    const addWorkForm = document.getElementById("addWorkForm")
+
+    const imgInput = document.getElementById("file-input")
+    const titleInput = document.getElementById("titre")
+    const categorieInput = document.getElementById ("categorie")
+
+    const defaultDisplay = document.querySelector(".defaultDisplay")
+    const preveiwImg = document.querySelector(".previewImg")
+
+    imgInput.addEventListener("change", function () {
+        const previewImgFile = imgInput.files[0]
+
+        if(previewImgFile){
+
+            defaultDisplay.setAttribute("style","display: none")
+            preveiwImg.setAttribute("style","display: block")
+
+            const reader = new FileReader()
+            reader.readAsDataURL(previewImgFile)
+
+            reader.addEventListener("load", function(){
+                preveiwImg.src = reader.result
+            })
+        }
+        
+    })
+
+    addWorkForm.addEventListener("submit", async function(event){
+
+        event.preventDefault()
+
+        const token = sessionStorage.getItem("authToken")
+
+        const selectedoption = categorieInput.options[categorieInput.selectedIndex]
+
+        let DataofWorkToAdd = new FormData()
+        DataofWorkToAdd.append("image",imgInput.files[0])
+        DataofWorkToAdd.append("title",titleInput.value)
+        DataofWorkToAdd.append("category",selectedoption.id)
+
+        addWorkForm.reset()
+        defaultDisplay.setAttribute("style","display: null")
+        preveiwImg.setAttribute("style","display: none")
+
+        let response = await fetch("http://localhost:5678/api/works",{
+
+            method : "POST",
+            headers : {"Authorization": "Bearer " + token},
+            body : DataofWorkToAdd
+
+        })
+
+        const works = await recoverWorks ()
+        displayWorks(works)
+        loadWorksAndCatgoriesInModal()
+        
+        console.log(response)
+
+    })
+
+    
+}
+
 
 await loadPage ()
 
 manageModaldisplay ()
 
 loadWorksAndCatgoriesInModal()
+
+addWork ()
 
 
 
