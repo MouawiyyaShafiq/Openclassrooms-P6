@@ -130,6 +130,7 @@ async function loadPage() {
         creatFilterMenu ()
         filtreWorks()
         
+        
     }else{
 
         const divModified = document.createElement("div")
@@ -140,6 +141,9 @@ async function loadPage() {
 
         const portfolioHeader = document.querySelector("#portfolio h2")
         portfolioHeader.innerHTML = "Mes Projets<button class=\"modal1Button\"><i class=\"fa-regular fa-pen-to-square\"></i><span> modifier</span></button>"
+
+        manageModaldisplay ()
+
 
     }
 }
@@ -205,7 +209,7 @@ async function loadWorksAndCatgoriesInModal() {
 
     for (let i=0 ; i < works.length ; i++) {
 
-        divImages.innerHTML += `<figure><img src="${works[i].imageUrl}"><span id="${works[i].id}"><i class="fa-solid fa-trash-can"></i></span></figure>`
+        divImages.innerHTML += `<figure><img src="${works[i].imageUrl}"><span class="delButton" id="${works[i].id}"><i class="fa-solid fa-trash-can"></i></span></figure>`
 
     }
 
@@ -259,7 +263,7 @@ async function addWork () {
 
         const selectedoption = categorieInput.options[categorieInput.selectedIndex]
 
-        let DataofWorkToAdd = new FormData()
+        const DataofWorkToAdd = new FormData()
         DataofWorkToAdd.append("image",imgInput.files[0])
         DataofWorkToAdd.append("title",titleInput.value)
         DataofWorkToAdd.append("category",selectedoption.id)
@@ -268,7 +272,7 @@ async function addWork () {
         defaultDisplay.setAttribute("style","display: null")
         preveiwImg.setAttribute("style","display: none")
 
-        let response = await fetch("http://localhost:5678/api/works",{
+        const response = await fetch("http://localhost:5678/api/works",{
 
             method : "POST",
             headers : {"Authorization": "Bearer " + token},
@@ -276,26 +280,42 @@ async function addWork () {
 
         })
 
-        const works = await recoverWorks ()
-        displayWorks(works)
-        loadWorksAndCatgoriesInModal()
-        
-        console.log(response)
 
     })
 
     
 }
 
+// Fonction permettant la suppression d’un projet au back-end
+
+async function delWork () {
+
+    const spanDelButton = document.querySelectorAll(".delButton")
+    
+    for( let i=0 ; i < spanDelButton.length ; i++){
+
+       spanDelButton[i].addEventListener("click", async function(event){
+
+        const token = sessionStorage.getItem("authToken")
+
+        const response = await fetch (`http://localhost:5678/api/works/${this.id}`,{
+            method : "DELETE",
+            headers : {"Authorization": "Bearer " + token},
+        })
+
+       })
+
+    }
+
+}
+
 
 await loadPage ()
 
-manageModaldisplay ()
-
-loadWorksAndCatgoriesInModal()
+await loadWorksAndCatgoriesInModal()
 
 addWork ()
-
+delWork ()
 
 
 
