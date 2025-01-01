@@ -147,7 +147,7 @@ async function loadPage() {
 
 //Fonction qui gère la fermeture et ouverture des modaux
 
-async function manageModalLoadingClosing () {
+function manageModaldisplay () {
 
     const modal1 = document.querySelector("#modal_1")
     const modal2 = document.querySelector("#modal_2")
@@ -194,10 +194,38 @@ async function manageModalLoadingClosing () {
 
 }
 
+//Fonction permettant l'affichage dynamique des images et catégorie dans les modaux
+
+async function loadWorksAndCatgoriesInModal() {
+
+    const works = await recoverWorks ()
+    const categorie = await recoverCategorie ()
+
+    const divImages = document.querySelector(".images")
+
+    for (let i=0 ; i < works.length ; i++) {
+
+        divImages.innerHTML += `<figure><img src="${works[i].imageUrl}"><span id="${works[i].id}"><i class="fa-solid fa-trash-can"></i></span></figure>`
+
+    }
+
+    const selectCategorie = document.getElementById("categorie")
+    
+    for (let i=0 ; i < categorie.length ; i++) {
+
+        selectCategorie.innerHTML += `<option id="${categorie[i].id}">${categorie[i].name}</option>`
+
+    }
+    
+}
+
 
 await loadPage ()
 
-manageModalLoadingClosing ()
+manageModaldisplay ()
+
+loadWorksAndCatgoriesInModal()
+
 
 
 
