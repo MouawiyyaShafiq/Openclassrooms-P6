@@ -140,13 +140,64 @@ async function loadPage() {
         document.body.prepend(divModified)
 
         const portfolioHeader = document.querySelector("#portfolio h2")
-        portfolioHeader.innerHTML = "Mes Projets<button href=\"#modal_1\" class=\"modified\"><i class=\"fa-regular fa-pen-to-square\"></i><span> modifier</span></button>"
+        portfolioHeader.innerHTML = "Mes Projets<button class=\"modal1Button\"><i class=\"fa-regular fa-pen-to-square\"></i><span> modifier</span></button>"
 
     }
 }
 
-loadPage()
+//Fonction qui gère la fermeture et ouverture des modaux
 
+async function manageModalLoadingClosing () {
+
+    const modal1 = document.querySelector("#modal_1")
+    const modal2 = document.querySelector("#modal_2")
+    
+    document.querySelector(".modal1Button").addEventListener("click", function(){
+
+        modal1.setAttribute("style","display: null")
+        modal1.addEventListener("click" , function(){
+            modal1.setAttribute("style","display: none")
+        })
+    })
+
+    document.querySelector(".modal2Button").addEventListener("click", function(){
+
+        modal2.setAttribute("style","display: null")
+        modal2.addEventListener("click" , function(){
+
+            modal1.setAttribute("style","display: none")
+            modal2.setAttribute("style","display: none")
+            
+        })
+
+    })
+
+    document.querySelectorAll(".closeModal").forEach(button => {
+
+        button.addEventListener("click", function(){
+
+            modal1.setAttribute("style","display: none")
+            modal2.setAttribute("style","display: none")
+    
+        })
+    })
+
+    document.querySelector(".closeModal2").addEventListener("click", function(){
+
+        modal2.setAttribute("style","display: none")
+    
+    })
+    
+    document.querySelectorAll(".containerModal").forEach(container => {
+        container.addEventListener("click" , function (event) { event.stopPropagation()})
+    })
+
+}
+
+
+await loadPage ()
+
+manageModalLoadingClosing ()
 
 
 
