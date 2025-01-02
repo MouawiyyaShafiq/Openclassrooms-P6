@@ -41,7 +41,8 @@ async function loginUser () {
                 body : loginData
             })
 
-            if (response.status ==! 200){
+
+            if (response.status != 200){
 
                 throw new Error()
 
