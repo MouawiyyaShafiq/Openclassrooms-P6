@@ -30,6 +30,7 @@ async function displayWorks (works){
     for ( let i=0 ; i < works.length ; i++) {
         
         const figure = document.createElement("figure")
+        figure.id = `galleryFigure${works[i].id}`
         
         const img = document.createElement("img")
         img.src = works[i].imageUrl
@@ -155,9 +156,11 @@ function manageModaldisplay () {
     const modal1 = document.querySelector("#modal_1")
     const modal2 = document.querySelector("#modal_2")
     
-    document.querySelector(".modal1Button").addEventListener("click", function(){
+    document.querySelector(".modal1Button").addEventListener("click", async function(){
 
-        modal1.setAttribute("style","display: null")
+        modal1.setAttribute("style","display: flex")
+        await loadWorksAndCatgoriesInModal()
+        delWork ()
         modal1.addEventListener("click" , function(){
             modal1.setAttribute("style","display: none")
         })
@@ -165,11 +168,14 @@ function manageModaldisplay () {
 
     document.querySelector(".modal2Button").addEventListener("click", function(){
 
-        modal2.setAttribute("style","display: null")
+        modal2.setAttribute("style","display: flex")
+        addWork ()
         modal2.addEventListener("click" , function(){
 
+            resetForm ()
             modal1.setAttribute("style","display: none")
             modal2.setAttribute("style","display: none")
+            
             
         })
 
@@ -179,14 +185,18 @@ function manageModaldisplay () {
 
         button.addEventListener("click", function(){
 
+            resetForm ()
             modal1.setAttribute("style","display: none")
             modal2.setAttribute("style","display: none")
-    
+            
         })
     })
 
-    document.querySelector(".closeModal2").addEventListener("click", function(){
-
+    document.querySelector(".closeModal2").addEventListener("click", async function(){
+        
+        resetForm ()
+        await loadWorksAndCatgoriesInModal()
+        delWork ()
         modal2.setAttribute("style","display: none")
     
     })
@@ -259,31 +269,79 @@ async function addWork () {
 
         event.preventDefault()
 
-        const token = sessionStorage.getItem("authToken")
+        const previewImgFile = imgInput.files[0]
 
-        const selectedoption = categorieInput.options[categorieInput.selectedIndex]
+        if(!previewImgFile){
 
-        const DataofWorkToAdd = new FormData()
-        DataofWorkToAdd.append("image",imgInput.files[0])
-        DataofWorkToAdd.append("title",titleInput.value)
-        DataofWorkToAdd.append("category",selectedoption.id)
+            let errorbox = document.getElementById("errorBoxModal2")
 
-        addWorkForm.reset()
-        defaultDisplay.setAttribute("style","display: null")
-        preveiwImg.setAttribute("style","display: none")
+            if (!errorbox) {
+                errorbox = document.createElement("div")
+                errorbox.id = "errorBoxModal2"
+                errorbox.innerText = "Veuillez sélectionner une image avant de valider."
+                document.getElementById("modal_2").prepend(errorbox)
+            } else {
+                errorbox.innerText = "Veuillez sélectionner une image avant de valider."
+            }
 
-        const response = await fetch("http://localhost:5678/api/works",{
+        } else {
 
-            method : "POST",
-            headers : {"Authorization": "Bearer " + token},
-            body : DataofWorkToAdd
+            const token = sessionStorage.getItem("authToken")
 
-        })
+            const selectedoption = categorieInput.options[categorieInput.selectedIndex]
 
+            const DataofWorkToAdd = new FormData()
+            DataofWorkToAdd.append("image",imgInput.files[0])
+            DataofWorkToAdd.append("title",titleInput.value)
+            DataofWorkToAdd.append("category",selectedoption.id)
 
+            resetForm ()
+
+            try {
+
+                const response = await fetch("http://localhost:5678/api/works",{
+
+                method : "POST",
+                headers : {"Authorization": "Bearer " + token},
+                body : DataofWorkToAdd
+
+                })
+
+                if (response.status ==! 201){
+
+                    throw new Error()
+    
+                } else {
+
+                    let errorbox = document.getElementById("errorBoxModal2")
+
+                    if (errorbox) {
+                        errorbox.remove()
+                    } 
+
+                    const works = await recoverWorks ()
+                    displayWorks(works)
+                     
+                }
+
+            } catch {
+                let errorbox = document.getElementById("errorBoxModal2")
+
+                if (!errorbox) {
+                    errorbox = document.createElement("div")
+                    errorbox.id = "errorBoxModal2"
+                    errorbox.innerText = "Erreur d'envoi veuillez vérifier le format de l'image."
+                    document.getElementById("modal_2").prepend(errorbox)
+                } else {
+                    errorbox.innerText = "Erreur d'envoi veuillez vérifier le format de l'image."
+                }
+
+            }
+            
+        }
+     
     })
 
-    
 }
 
 // Fonction permettant la suppression d’un projet au back-end
@@ -298,24 +356,83 @@ async function delWork () {
 
         const token = sessionStorage.getItem("authToken")
 
-        const response = await fetch (`http://localhost:5678/api/works/${this.id}`,{
-            method : "DELETE",
-            headers : {"Authorization": "Bearer " + token},
-        })
+        try {
 
+            const response = await fetch (`http://localhost:5678/api/works/${this.id}`,{
+                method : "DELETE",
+                headers : {"Authorization": "Bearer " + token},
+            })
+
+            if (response.status ==! 204){
+
+                throw new Error()
+
+            } else {
+
+                let errorbox = document.getElementById("errorBoxModal1")
+
+                    if (errorbox) {
+                        errorbox.remove()
+                    } 
+
+                const parentFigure = spanDelButton[i].parentNode
+                parentFigure.remove()
+
+                const workInGallery = document.getElementById(`galleryFigure${this.id}`)
+                workInGallery.remove()
+
+            }
+
+        } catch {
+
+            let errorbox = document.getElementById("errorBoxModal1")
+
+            if (!errorbox) {
+                errorbox = document.createElement("div")
+                errorbox.id = "errorBoxModal1"
+                errorbox.innerText = "Echec de la suppression veuillez réessayer."
+                document.getElementById("modal_1").prepend(errorbox)
+            }
+
+        }
+
+        
        })
 
     }
 
 }
 
+function resetForm () {
+
+    const addWorkForm = document.getElementById("addWorkForm")
+
+    const defaultDisplay = document.querySelector(".defaultDisplay")
+    const preveiwImg = document.querySelector(".previewImg")
+
+    addWorkForm.reset()
+    defaultDisplay.setAttribute("style","display: flex")
+    preveiwImg.setAttribute("style","display: none")
+
+    let errorbox = document.getElementById("errorBoxModal1")
+
+        if (errorbox) {
+            errorbox.remove()
+        } 
+
+    let errorbox2 = document.getElementById("errorBoxModal2")
+
+        if (errorbox2) {
+            errorbox2.remove()
+        } 
+
+}
+
 
 await loadPage ()
 
-await loadWorksAndCatgoriesInModal()
 
-addWork ()
-delWork ()
+
 
 
 

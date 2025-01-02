@@ -86,11 +86,11 @@
 							</div>
 							<img class="previewImg" style="display: none;">
 						</label>
-						<input id="file-input" type="file" accept="image/*" hidden>
+						<input id="file-input" name="file-input" type="file" accept="image/*" hidden>
 						<label for="titre">Titre</label>
-						<input type="text" name="titre" id="titre">
+						<input type="text" name="titre" id="titre" required>
 						<label for="categorie">Catégorie</label>
-						<select id="categorie" name="categorie">
+						<select id="categorie" name="categorie" required>
 							<!--Modif : list des categories ajoutée dynamiquement avec JS -->
 						</select>
 					</div>
