@@ -265,7 +265,7 @@ nav a:hover {
 }
 
 .modalTitle {
-	font-family: work sans;
+	font-family: "Work Sans";
 	font-size: 28px;
 	margin-top: 64px;
 	margin-bottom: 50px;
@@ -358,7 +358,7 @@ nav a:hover {
 
 .modal_2 select{
 	font-size: 14px;
-	font-family: work sans;
+	font-family: "Work Sans";
 	padding-left: 10px;
 	color: #444444 ;
 }
@@ -409,15 +409,15 @@ nav a:hover {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	font-family: work sans;
+	font-family: "Work Sans";
 	font-size: 14px;
 	font-weight: 600;
 }
 
 .defaultDisplay p {
-	font-family: work sans;
+	font-family: "Work Sans";
 	margin-bottom: 20px;
-	font-size: 10;
+	font-size: 10px;
 	color: #444444;
 }
 
