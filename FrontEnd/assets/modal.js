@@ -74,13 +74,36 @@ async function loadWorksAndCatgoriesInModal() {
 
     }
 
-    const selectCategorie = document.getElementById("categorie")
-    selectCategorie.innerHTML = '<option value="" selected></option>'
-    
-    for (let i=0 ; i < categorie.length ; i++) {
+    const modal2FormDiv = document.querySelector(".modal_2 form > div")
+    let selectCategorie = document.getElementById("categorie")
+    let labelSelectCategorie = document.getElementById("labelCategorie")
 
-        selectCategorie.innerHTML += `<option id="${categorie[i].id}">${categorie[i].name}</option>`
+    if(!selectCategorie || !labelSelectCategorie){
 
+        modal2FormDiv.innerHTML += 
+        `<label id="labelCategorie" for="categorie">Catégorie</label>
+        <select id="categorie" name="categorie" required=""></select>`
+        
+        selectCategorie = document.getElementById("categorie")
+        selectCategorie.innerHTML = '<option value="" selected></option>'
+            
+        for (let i=0 ; i < categorie.length ; i++) {
+
+            selectCategorie.innerHTML += `<option id="${categorie[i].id}">${categorie[i].name}</option>`
+
+        }
+            
+    } else {
+
+        selectCategorie.innerHTML = '<option value="" selected></option>'
+
+        for (let i=0 ; i < categorie.length ; i++) {
+
+            
+            selectCategorie.innerHTML += `<option id="${categorie[i].id}">${categorie[i].name}</option>`
+
+        }
+            
     }
     
 }
@@ -95,22 +118,21 @@ async function addWork () {
     const titleInput = document.getElementById("titre")
     const categorieInput = document.getElementById ("categorie")
 
-    const defaultDisplay = document.querySelector(".defaultDisplay")
-    const preveiwImg = document.querySelector(".previewImg")
+    const defaultDisplayDiv = document.querySelector(".defaultDisplay div")
+    const preveiwImgLabel = document.getElementById("file-label")
 
     imgInput.addEventListener("change", function () {
         const previewImgFile = imgInput.files[0]
 
         if(previewImgFile){
 
-            defaultDisplay.setAttribute("style","display: none")
-            preveiwImg.setAttribute("style","display: block")
-
+            defaultDisplayDiv.setAttribute("style","display: none")
+            
             const reader = new FileReader()
             reader.readAsDataURL(previewImgFile)
 
             reader.addEventListener("load", function(){
-                preveiwImg.src = reader.result
+                preveiwImgLabel.innerHTML = `<img src="${reader.result}" alt="Preview Image" class="previewImg"></img>`
             })
         }
         
@@ -122,7 +144,7 @@ async function addWork () {
 
         const previewImgFile = imgInput.files[0]
 
-        if(!previewImgFile){
+        if(!previewImgFile || !titleInput.value ){
 
             let errorbox = document.getElementById("errorBoxModal2")
 
@@ -261,12 +283,12 @@ function resetForm () {
 
     const addWorkForm = document.getElementById("addWorkForm")
 
-    const defaultDisplay = document.querySelector(".defaultDisplay")
-    const preveiwImg = document.querySelector(".previewImg")
+    const defaultDisplayDiv = document.querySelector(".defaultDisplay div")
+    const preveiwImgLabel = document.getElementById("file-label")
 
     addWorkForm.reset()
-    defaultDisplay.setAttribute("style","display: flex")
-    preveiwImg.setAttribute("style","display: none")
+    defaultDisplayDiv.setAttribute("style","display: flex")
+    preveiwImgLabel.innerHTML=""
 
     let errorbox = document.getElementById("errorBoxModal1")
 

@@ -79,21 +79,19 @@
 				<p class="modalTitle">Ajout photo</p>
 				<form id="addWorkForm">
 					<div>
-						<label class="file-label" for="file-input">
-							<div class="defaultDisplay" >
+						<div class="defaultDisplay" >
+							<div>
 								<i class="fa-regular fa-image"></i>
 								<div class="buttonVisual">+ Ajouter photo</div>
-								<p>jpg, png : 4mo max</p>
+								<p>jpg, png : 4mo max</p>	
 							</div>
-							<img src="" alt="Preview Image" class="previewImg" style="display: none;">
-						</label>
+							<label id="file-label" class="file-label" for="file-input">
+							</label>
+						</div>
 						<input id="file-input" name="file-input" type="file" accept="image/*" hidden>
 						<label for="titre">Titre</label>
 						<input type="text" name="titre" id="titre" required>
-						<label for="categorie">Catégorie</label>
-						<select id="categorie" name="categorie" required>
-							<!--Modif : list des categories ajoutée dynamiquement avec JS -->
-						</select>
+						<!--Modif : select ajoutée dynamiquement avec JS -->
 					</div>
 					<input id="valider" type="submit" value="Valider" >
 				</form>
