@@ -82,7 +82,7 @@ async function loadWorksAndCatgoriesInModal() {
 
         modal2FormDiv.innerHTML += 
         `<label id="labelCategorie" for="categorie">Catégorie</label>
-        <select id="categorie" name="categorie" required=""></select>`
+        <select id="categorie" name="categorie" ></select>`
         
         selectCategorie = document.getElementById("categorie")
         selectCategorie.innerHTML = '<option value="" selected></option>'
@@ -121,8 +121,13 @@ async function addWork () {
     const defaultDisplayDiv = document.querySelector(".defaultDisplay div")
     const preveiwImgLabel = document.getElementById("file-label")
 
-    imgInput.addEventListener("change", function () {
+    const submitButton = document.getElementById("valider")
+
+    addWorkForm.addEventListener("change", function () {
+
+        submitButton.removeAttribute("disabled","")
         const previewImgFile = imgInput.files[0]
+        const selectedoption = categorieInput.options[categorieInput.selectedIndex]
 
         if(previewImgFile){
 
@@ -135,6 +140,15 @@ async function addWork () {
                 preveiwImgLabel.innerHTML = `<img src="${reader.result}" alt="Preview Image" class="previewImg"></img>`
             })
         }
+
+        if (previewImgFile && titleInput.value && selectedoption.id) {
+
+            submitButton.setAttribute("style","null")
+        } else {
+
+            submitButton.setAttribute("style","background-color:#A7A7A7;")
+        }
+
         
     })
 
@@ -143,25 +157,26 @@ async function addWork () {
         event.preventDefault()
 
         const previewImgFile = imgInput.files[0]
+        const selectedoption = categorieInput.options[categorieInput.selectedIndex]
 
-        if(!previewImgFile || !titleInput.value ){
+
+        if (!previewImgFile || !titleInput.value || !selectedoption.id) {
 
             let errorbox = document.getElementById("errorBoxModal2")
 
-            if (!errorbox) {
-                errorbox = document.createElement("div")
-                errorbox.id = "errorBoxModal2"
-                errorbox.innerText = "Veuillez sélectionner une image avant de valider."
-                document.getElementById("modal_2").prepend(errorbox)
-            } else {
-                errorbox.innerText = "Veuillez sélectionner une image avant de valider."
-            }
-
+                if (!errorbox) {
+                    errorbox = document.createElement("div")
+                    errorbox.id = "errorBoxModal2"
+                    errorbox.innerText = "Merci de remplir intégralement le formulaire avant l'envoi"
+                    document.getElementById("modal_2").prepend(errorbox)
+                } else {
+                    errorbox.innerText = "Merci de remplir intégralement le formulaire avant l'envoi"
+                }
+            
         } else {
 
             const token = sessionStorage.getItem("authToken")
 
-            const selectedoption = categorieInput.options[categorieInput.selectedIndex]
 
             const DataofWorkToAdd = new FormData()
             DataofWorkToAdd.append("image",imgInput.files[0])
@@ -183,7 +198,7 @@ async function addWork () {
                 if (response.status != 201){
 
                     throw new Error()
-    
+        
                 } else {
 
                     let errorbox = document.getElementById("errorBoxModal2")
@@ -191,13 +206,15 @@ async function addWork () {
                     if (errorbox) {
                         errorbox.remove()
                     } 
-                    
+                        
                     document.querySelector("#modal_1").setAttribute("style","display: none")
                     document.querySelector("#modal_2").setAttribute("style","display: none")
-                    
+                        
+                    submitButton.setAttribute("disabled","")
+
                     const works = await recoverWorks ()
                     displayWorks(works)
-                     
+                        
                 }
 
             } catch {
@@ -209,13 +226,14 @@ async function addWork () {
                     errorbox.innerText = "Erreur d'envoi veuillez vérifier le format de l'image."
                     document.getElementById("modal_2").prepend(errorbox)
                 } else {
-                    errorbox.innerText = "Erreur d'envoi veuillez vérifier le format de l'image."
+                        errorbox.innerText = "Erreur d'envoi veuillez vérifier le format de l'image."
                 }
 
             }
-            
+                     
+
         }
-     
+
     })
 
 }
